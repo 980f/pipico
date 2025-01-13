@@ -3,9 +3,11 @@
 // Copyright (c) 2025 Andy Heilveil, (github/980f). All rights reserved.
 */
 
-#include "PicoPIOemulator.h"
+#include "picopioemulator.h"
 #include <bitbanger.h>
 #include <bit> //rotate instructions are still new to C++, despite being present in nearly every microcomputer ever, at least since hte early 1970's when C was invented.
+#include <cheaptricks.h>
+#include <cstdint>
 
 void PicoPIOemulator::SM::Fifo::push(unsigned value) {
   if (isFull()) {

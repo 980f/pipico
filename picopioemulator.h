@@ -6,12 +6,14 @@
 
 #pragma once
 #include <bitbanger.h>
-#include <dout.h>  //GPIO pins?
+#include <cstdint>
+#include <functional>
+// #include <dout.h>  //GPIO pins?
 
 class PicoPIOemulator {
 public:
-  bool V1 = false; //allow dynamic switching of architecture.
-
+  bool V1; //allow dynamic switching of architecture.
+  unsigned which;
   struct BitSpan {
     unsigned lsb;
     unsigned count;
@@ -314,6 +316,7 @@ public: //creating logical interface, bypassing the memory mapped interface
   struct ControlWord : PsuedoMemory {
     //simulating bits, internal hardware resets, clock synch
     ControlWord(PicoPIOemulator *super) : PsuedoMemory(super) {}
+    using PsuedoMemory::operator =;
   } theCTRL;
 
   /* bridge to simulating memory mapped access
@@ -370,7 +373,9 @@ public: //creating logical interface, bypassing the memory mapped interface
     void clearOops() {
       theFifo.oopsed = false;
     }
-  } fife;
+  } ;
+
+   PicoPIOemulator( unsigned which,bool v1=false) : V1{v1}, which{which}, theCTRL{this} {}
 
   unsigned FSTAT_pack();
 
